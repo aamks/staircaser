@@ -30,7 +30,7 @@ class Json():
 # }}}
 
 class Staircaser():
-    def __init__(self, bottom, fheight, floors, swidth=2):# {{{
+    def __init__(self, bottom, fheight, floors, swidth):# {{{
         ''' 
         bottom      : the projection of the staircase onto XY plane
         fheight     : floor height
@@ -39,6 +39,8 @@ class Staircaser():
 
         We will produce a json with all the 16 orientations of stairs runs: 
             2 along_wall (short vs long) * 4 rotations * 2 directions (CW vs CCW) 
+
+        along short / long wall are called orientation within the script.
         '''
 
         self.fheight=fheight
@@ -308,6 +310,12 @@ class Staircaser():
 
 # }}}
     def _affine_transforms(self):# {{{
+        ''' 
+        Generate 4 rotations and 4 mirrors from a single input set. Scale(-1)
+        gives the mirror effect. The data var is for passing the z coord, since
+        shapley is 2D, so only transforms x,y.
+        '''
+
         self.boxen=list()
         for i in self._geoms:
             self.boxen.append((box(i['p0'][0], i['p0'][1], i['p1'][0], i['p1'][1]),i))
@@ -348,8 +356,8 @@ class Staircaser():
 # }}}
     def _on_end(self):# {{{
         json=Json()
-        json.write(self.json, "/tmp/staircaser.json")
-        print("The result written to /tmp/staircaser.json")
+        json.write(self.json, "/tmp/result.json")
+        print("The result written to /tmp/result.json")
 # }}}
 # }}}
 
