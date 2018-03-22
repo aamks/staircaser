@@ -1,0 +1,2 @@
+# staircaser
+Generator of staircases
