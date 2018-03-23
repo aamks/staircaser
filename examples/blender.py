@@ -19,14 +19,10 @@ f=open("/tmp/result.json", 'r')
 g=json.load(f)
 f.close()
 tx=0
-ty=0
 for k,v in g['staircases'].items():
-    if tx==80:
-        ty=20
-        tx=0
     for i in v:
         bpy.ops.mesh.primitive_cube_add(location=i['center'])
         bpy.ops.transform.resize(value=i['size'])
-        bpy.ops.transform.translate(value=(tx,ty,0))
+        bpy.ops.transform.translate(value=(tx,0,0))
     tx+=10
 

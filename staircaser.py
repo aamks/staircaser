@@ -37,8 +37,8 @@ class Staircaser():
         floors      : number of floors
         swidth      : stair width
 
-        We will produce a json with all the 16 orientations of stairs runs: 
-            2 along_wall (short vs long) * 4 rotations * 2 directions (CW vs CCW) 
+        We will produce a json with all the 8 orientations of stairs runs: 
+            2 along_wall (short vs long) * 2 rotations * 2 directions (CW vs CCW) 
 
         along short / long wall are called orientation within the script.
         '''
@@ -192,7 +192,7 @@ class Staircaser():
             size=(self.landings[1]['size'][0]/2, self.landings[1]['size'][1]/2, sh/2)
             self._make_single_stair(center,size)
 
-        center=(self.landings[0]['p0'][0]+0.5*self.swidth, self.landings[1]['p0'][0]+self.lwidth+0.5*sw, f*self.fheight + self.how_many_stairs*sh+i*sh+ 1)
+        center=(self.landings[0]['p0'][0]+0.5*self.swidth, self.landings[0]['p1'][1]+0.5*sw, f*self.fheight + self.how_many_stairs*sh+i*sh+ 1)
         size=(self.swidth/2,sw/2,1)
         self._make_single_stair(center,size)
 
@@ -255,7 +255,7 @@ class Staircaser():
             size=(self.landings[1]['size'][0]/2, self.landings[1]['size'][1]/2, sh/2)
             self._make_single_stair(center,size)
 
-        center=(self.landings[1]['p0'][1]+self.lwidth+0.5*sw, self.landings[1]['p0'][1]+0.5*self.swidth, f*self.fheight + self.how_many_stairs*sh+i*sh+ 1)
+        center=(self.landings[0]['p1'][0]+0.5*sw, self.landings[1]['p0'][1]+0.5*self.swidth, f*self.fheight + self.how_many_stairs*sh+i*sh+ 1)
         size=(sw/2, self.swidth/2,1)
         self._make_single_stair(center,size)
 
@@ -311,7 +311,7 @@ class Staircaser():
 # }}}
     def _affine_transforms(self):# {{{
         ''' 
-        Generate 4 rotations and 4 mirrors from a single input set. Scale(-1)
+        Generate 2 rotations and 2 mirrors from a single input set. Scale(-1)
         gives the mirror effect. The data var is for passing the z coord, since
         shapley is 2D, so only transforms x,y.
         '''
@@ -320,7 +320,7 @@ class Staircaser():
         for i in self._geoms:
             self.boxen.append((box(i['p0'][0], i['p0'][1], i['p1'][0], i['p1'][1]),i))
 
-        for angle in (0,90,180,270):
+        for angle in (0,180):
             label0="{}_{}".format(angle,  self.orientation)
             label1="-{}_{}".format(angle,  self.orientation)
             self.json['staircases'][label0]=list()
@@ -361,5 +361,4 @@ class Staircaser():
 # }}}
 # }}}
 
-#Staircaser(bottom=[(5,5,0), (11,14,0)], fheight=5.1, floors=1, swidth=2)
-Staircaser(bottom=[(5,0,0), (12,4,0)], fheight=3, floors=3, swidth=2)
+Staircaser(bottom=[(5,5,0), (7,5,0)], fheight=3, floors=3, swidth=2)
